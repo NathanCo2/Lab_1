@@ -1,3 +1,22 @@
+"""!
+@file led.py
+Run real or simulated dynamic response tests and plot the results. This program
+demonstrates a way to make a simple GUI with a plot in it. It uses Tkinter, an
+old-fashioned and ugly but useful GUI library which is included in Python by
+default.
+
+This file is based loosely on an example found at
+https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_tk_sgskip.html
+
+@author Jessica Perez, Jacquelyn Banh, and Nathan Chapman
+@date   2024-01-30 Original program, based on example from above listed source
+@copyright (c) 2024 by Jessica Perez, Jacquelyn Banh, and Nathan Chapman and released under the GNU Public Licenes V3
+"""
+
+import time
+import pyb
+import micropython
+
 class MotorDriver:
     """! 
     This class implements a motor driver for an ME405 kit. 
@@ -10,9 +29,9 @@ class MotorDriver:
         @param en_pin (There will be several parameters)
         """
         print ("Creating a motor driver")
-        
+        en_pin = 
         self.timer = timer  # Timer 2, frequency 1000Hz
-        self.en_pin = 
+        self.en_pin = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
 
     def set_duty_cycle (self, level):
         """!
