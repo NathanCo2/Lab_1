@@ -1,40 +1,32 @@
-from matplotlib import pyplot 
+"""!
+@file step_response.py
+Run real or simulated dynamic response tests and plot the results. This program
+demonstrates a way to make a simple GUI with a plot in it. It uses Tkinter, an
+old-fashioned and ugly but useful GUI library which is included in Python by
+default.
 
-#Creates empty array
-xaxis_times = []
-yaxis_height = []
+This file is based loosely on an example found at
+https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_tk_sgskip.html
 
-#opens the data file from folder and reads
-with open('data.csv', 'r') as file: 
-    #store column headers for first row by characters  
-    header = file.readline(-1)
-    time = header[:8]
-    height = header[10:20]
-    #iterates through each line of data file 
-    for line in file:
-        try:
-            #splits each line where comma is present
-            split = line.split(',')
-            #Creates a list of the X-values (Time [s])
-            x = split[0:1]#grabs first column
-            join_x = ','.join(x)#combines 2 strings together
-            xx = float(join_x)
-            #Creates a list of the Y-values (Height [m])
-            y = split[1:2]
-            join_y = ','.join(y) 
-            yy = float(join_y)
-            #stores the created list of variables in the blank arrays
-            xaxis_times.append(xx)
-            yaxis_height.append(yy)
-            #Creates points for plot
-            #print(xaxis_times, yaxis_height)   
-        except ValueError:
-            #error occurs when float runs
-            print('Error: Not a integer')
-            pass
-    #plots the values (x,y) values stored in array
-    pyplot.plot(xaxis_times, yaxis_height)
-    pyplot.xlabel('Time [s]')
-    pyplot.ylabel('Height [m]')
-    pyplot.grid(True)
-    pyplot.show()
+@author Jessica Perez, Jacquelyn Banh, and Nathan Chapman
+@date   2024-01-30 Original program, based on example from above listed source
+@copyright (c) 2024 by Jessica Perez, Jacquelyn Banh, and Nathan Chapman and released under the GNU Public Licenes V3
+"""
+
+def led_setup(): 
+    """!
+    Doxygen style docstring for interrupt callback function
+    """
+    val = adcpin.read()
+    int_queue.put(val)# Puts an integer into the queue
+    
+def led_brightness(): 
+    """!
+    Doxygen style docstring for interrupt callback function
+    """
+    val = adcpin.read()
+    int_queue.put(val)# Puts an integer into the queue
+
+
+if __name__ == "__main__":
+    step_response(timer_int)
