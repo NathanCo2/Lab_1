@@ -16,41 +16,38 @@ import time
 import pyb
 import micropython
 
-def timer_int(tim_num): 
-    """!
-    Doxygen style docstring for interrupt callback function
-    """
-    
+# Initialize pins/ADC Objects (aka initialize pins)
+    # Configure Pin A0 for output and timer (PWM2/1: Timer 2 and Channel 1)
+#pinA0 = pyb.Pin(pyb.Pin.board.PA0)
+pinA0 = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
+
 def led_setup(): 
     """!
     Sets up LED
     """
-    # Initialize pins/ADC Objects (aka initialize pins)
-    pinA0 = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP) #Configures pinA0 for Output
-    return pinA0
+    #tim_num = pyb.Timer.PWM_INVERTED #Creates a timer 
+    #tim_num.init(freq=1000) #Starts the timer
+    tim = pyb.Timer(2, freq=1000)  # Timer 2, frequency 1000Hz
+    # Configure PWM channel with inverted polarity
+    ch = tim.channel(1, pyb.Timer.PWM_INVERTED, pin=pinA0)  # PWM on Timer 2, Channel 1
+    return ch
 
-def time_setup():
-    tim_num = pyb.Timer(2)#Creates a timer
-    tim_num = pyb.Timer.PWM_INVERTED
-    tim_num.callback(timer_int)#Turns on callback
-    tim_num.init(freq=100)#Starts the timer
-    pinC0.high()#Sets pin high to turn on voltage to microcontroller
-    tim_num.callback(None)#Turns off the callback
-    cur_time = 0
-    
-def led_brightness(): 
+def led_brightness(ch, duty_cycle): 
     """!
     Doxygen style docstring for interrupt callback function
     """
-    val = adcpin.read()
-    int_queue.put(val)# Puts an integer into the queue
+    ch.pulse_width_percent = (int(duty_cycle * 100))
+
 
 # This main code is run if this file is the main program but won't run if this
 # file is imported as a module by some other main program
 if __name__ == "__main__":
-    pinA0 = led_setup()
+    ch = led_setup()
+    percent = 0
     while True:
-        time.sleep(0.5)
-        pinA0.low()
-        time.sleep(0.5)
-        pinA0.high()
+        percent += 0.2
+        led_brightness(ch, 0)
+        time.sleep(1)
+        led_brightness(ch, 0.8)
+
+
