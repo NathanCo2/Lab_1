@@ -19,7 +19,7 @@ def led_setup():
     Sets up LED
     """
     # Initialize pins/ADC Objects (aka initialize pins)
-    pinA0 = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)#Configures pinA0 for Output
+    pinA0 = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP) #Configures pinA0 for Output
     return pinA0
 def led_brightness(): 
     """!
@@ -33,6 +33,7 @@ def led_brightness():
 if __name__ == "__main__":
     pinA0 = led_setup()
     while True:
-        pinA0.low
-        time.sleep(1)
-        pinA0.high
+        time.sleep(0.5)
+        pinA0.low()
+        time.sleep(0.5)
+        pinA0.high()
