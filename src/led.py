@@ -18,8 +18,8 @@ import micropython
 
 # Initialize pins/ADC Objects (aka initialize pins)
     # Configure Pin A0 for output and timer (PWM2/1: Timer 2 and Channel 1)
-pinA0 = pyb.Pin(pyb.Pin.board.PA0)
-#pinA0 = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
+#pinA0 = pyb.Pin(pyb.Pin.board.PA0)
+pinA0 = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
 
 def led_setup(): 
     """!
