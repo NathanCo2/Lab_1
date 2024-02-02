@@ -13,9 +13,7 @@ https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_tk_sgskip.htm
 @copyright (c) 2024 by Jessica Perez, Jacquelyn Banh, and Nathan Chapman and released under the GNU Public Licenes V3
 """
 
-import time
 import pyb
-import micropython
 
 class MotorDriver:
     """! 
@@ -26,12 +24,20 @@ class MotorDriver:
         """! 
         Creates a motor driver by initializing GPIO
         pins and turning off the motor for safety. 
-        @param en_pin (There will be several parameters)
+        @param en_pin: Pin for enabling the motor driver
+        @param in1pin: Pin for controlling direction 1
+        @param in2pin: Pin for controlling direction 2
+        @param timer: Timer object for generating PWM signals
         """
         print ("Creating a motor driver")
-        en_pin = 
-        self.timer = timer  # Timer 2, frequency 1000Hz
-        self.en_pin = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
+        self.en_pin = en_pin
+        self.timer = timer
+        self.IN1A = timer.channel(1, pyb.Timer.PWM, in1pin) #sets up ch 1 for PWM mode on in1pin
+        self.IN2A = timer.channel(2, pyb.Timer.PWM, in2pin) #sets up ch 2 for PWM mode on in2pin
+        self.en_pin.high()
+        self.IN1A.low()
+        self.IN2A.pulse_width_percent(50)
+        
 
     def set_duty_cycle (self, level):
         """!
@@ -52,5 +58,13 @@ class MotorDriver:
 # This main code is run if this file is the main program but won't run if this
 # file is imported as a module by some other main program       
 if __name__ == "__main__":
-    moe = MotorDriver (a_pin, another_pin, a_timer)
-    moe.set_duty_cycle (-42)
+    # set up timer 3
+    TIM3 = pyb.Timer(3, freq=1000) # Timer 3, frequency 1000Hz
+    # Define pin assignments
+    ENA = pyb.Pin(pyb.Pin.board.PA10, pyb.Pin.OUT_PP)
+    IN1A = pyb.Pin(pyb.Pin.board.PB4)
+    IN2A = pyb.Pin(pyb.Pin.board.PB)
+    
+    # Create motor drivers
+    moe = MotorDriver(ENA, IN1A, IN2A, TIM3)
+    moe.set_duty_cycle(-42)
