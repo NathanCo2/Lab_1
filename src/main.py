@@ -14,38 +14,36 @@ https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_tk_sgskip.htm
 """
 import time
 import pyb
-import micropython
-
-# Initialize pins/ADC Objects (aka initialize pins)
-    # Configure Pin A0 for output
-pinA0 = pyb.Pin(pyb.Pin.board.PA0, pyb.Pin.OUT_PP)
-    # Configure PWM3/2 for timer (Timer 3 and Channel 2)
-pin32 = pyb.Pin(pyb.Pin.board.D4, pyb.Pin.OUT_PP)
-
-def led_setup(): 
-    """!
-    Sets up LED
-    """
-    tim_num = pyb.Timer.PWM_INVERTED(2) #Creates a timer 
-    tim_num.init(freq=1000) #Starts the timer
-    #ch.pulse_width_percent(50)
-    
-
-def led_brightness(): 
-    """!
-    Doxygen style docstring for interrupt callback function
-    """
-    while True:
-        time.sleep(0.5)
-        pinA0.low()
-        time.sleep(0.5)
-        pinA0.high()
+from motor_driver import MotorDriver
 
     
 # This main code is run if this file is the main program but won't run if this
 # file is imported as a module by some other main program
-if __name__ == "__main__":
-    led_brightness(led_setup)
-    
-    #pinA0 = led_setup()
+if __name__ == "__main__":# set up timer 3
+    TIM3 = pyb.Timer(3, freq=2000) # Timer 3, frequency 2000Hz
+    TIM5 = pyb.Timer(5, freq=2000) # Timer 5, frequency 2000Hz
+    # Define pin assignments for motor 1
+    ENA = pyb.Pin(pyb.Pin.board.PA10, pyb.Pin.OUT_PP)
+    IN1A = pyb.Pin(pyb.Pin.board.PB4)
+    IN2A = pyb.Pin(pyb.Pin.board.PB5)
+    # Define pin assignments for motor 2
+    ENB = pyb.Pin(pyb.Pin.board.PC1, pyb.Pin.OUT_PP)
+    IN1B = pyb.Pin(pyb.Pin.board.PA0)
+    IN2B = pyb.Pin(pyb.Pin.board.PA1)
+
+
+    # Create motor drivers
+    moe = MotorDriver(ENA, IN1A, IN2A, TIM3)
+    eenie = MotorDriver(ENB, IN1B, IN2B, TIM5)
+    while True:
+        moe.set_duty_cycle (50)				#Forward at 50% duty cycle
+        eenie.set_duty_cycle (-50)	
+        time.sleep(2)						#Sleeps for 2 seconds
+        moe.set_duty_cycle (-50)			#Reverse at 50% duty cycle
+        eenie.set_duty_cycle (50)	
+        time.sleep(2)						#Sleeps for 2 seconds
+        moe.set_duty_cycle (0)				#Stops the duty cycle
+        eenie.set_duty_cycle (0)	
+        time.sleep(2)						#Sleeps for 2 seconds
+
 
