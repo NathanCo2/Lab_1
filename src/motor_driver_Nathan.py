@@ -90,5 +90,5 @@ if __name__ == "__main__":
         eenie.set_duty_cycle (50)	
         time.sleep(2)						#Sleeps for 2 seconds
         moe.set_duty_cycle (0)				#Stops the duty cycle
-        enie.set_duty_cycle (0)	
+        eenie.set_duty_cycle (0)	
         time.sleep(2)						#Sleeps for 2 seconds
