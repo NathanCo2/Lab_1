@@ -30,10 +30,12 @@ if __name__ == "__main__":# set up timer 3
     # Create motor drivers
     moe = MotorDriver(ENA, IN1A, IN2A, TIM3)
     while True:
-        moe.set_duty_cycle (50)				#Forward at 50% duty cycle
+        moe.set_duty_cycle (100)				#Forward at 50% duty cycle
         time.sleep(2)						#Sleeps for 2 seconds
         moe.set_duty_cycle (-50)			#Reverse at 50% duty cycle
         time.sleep(2)						#Sleeps for 2 seconds
+        moe.set_duty_cycle (50)			#Reverse at 50% duty cycle
+        time.sleep(2)
         moe.set_duty_cycle (0)				#Stops the duty cycle
         time.sleep(2)						#Sleeps for 2 seconds
 
