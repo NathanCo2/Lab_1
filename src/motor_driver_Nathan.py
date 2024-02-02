@@ -32,10 +32,10 @@ class MotorDriver:
         print ("Creating a motor driver")
         self.en_pin = en_pin
         self.timer = timer
-        self.ch1 = timer.channel(1, pyb.Timer.PWM, in1pin) #sets up ch 1 for PWM mode on in1pin
-        self.ch2 = timer.channel(2, pyb.Timer.PWM, in2pin) #sets up ch 2 for PWM mode on in2pin
+        self.ch1 = timer.channel(1, pyb.Timer.PWM, pin=in1pin) #sets up ch 1 for PWM mode on in1pin
+        self.ch2 = timer.channel(2, pyb.Timer.PWM, pin=in2pin) #sets up ch 2 for PWM mode on in2pin
         self.en_pin.high()
-        self.ch1.low()
+        self.ch1.pulse_width_percent(0)
         self.ch2.pulse_width_percent(50)
         
 
@@ -51,16 +51,16 @@ class MotorDriver:
         print (f"Setting duty cycle to {level}")
         if level > 0:
             # Moves the motor forward
-            self.ch1.low()
+            self.ch1.pulse_width_percent(0)
             self.ch2.pulse_width_percent(level)
         elif level < 0:
             # Moves the motor reverse
             self.ch1.pulse_width_percent(-level)
-            self.ch2.low()
+            self.ch2.pulse_width_percent(0)
         else:
             #Braking/Stops the motor
-            self.ch1.low()
-            self.ch2.low()
+            self.ch1.pulse_width_percent(0)
+            self.ch2.pulse_width_percent(0)
         # The microcontroller controls pins ENA, IN1A, and IN2A. A common way of using these pins is to set ENA high
         # to enable the motor, set IN1A low, and send a PWM signal to IN2A to power the motor in one direction
         # reverse the signals to IN1A and IN2A to power the motor in the other direction. 
@@ -79,4 +79,4 @@ if __name__ == "__main__":
     
     # Create motor drivers
     moe = MotorDriver(ENA, IN1A, IN2A, TIM3)
-    moe.set_duty_cycle(42)
+    moe.set_duty_cycle(-42)
